@@ -1,0 +1,25 @@
+Forebrain:
+	frontal lobe:
+		Functions:
+			problem solving, decision making, personality
+	pariental lobe:
+		Functions:
+			process somatosensory input(touch, taste, temp, pain) other sesory info is process by different component then result is given to it, decode it, apply attention, spatial awareness, pull related experiences, and pass all that info to frontal for decision
+
+	temporal lobe:
+		Fuctions:
+			audio, language comprehension, gets visual data from occipital and forms association before sending to pariental
+
+	occipital lobe:
+		Functions:
+			sight data
+
+	hypothalamus:
+		Functions:
+			chemical controller
+	hippocampus:
+		Functions:
+			memory consolidation, learning
+	amygdala:
+		Functions:
+			emotion understanding(fear, anger etc)
