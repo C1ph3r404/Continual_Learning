@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-21
 - **Component:** Parietal Hub / Model Hierarchy / Strict Gradient Wall
-- **Status:** NOT FIXED
+- **Status:** FIXED (e860d21)
 
 ### Symptoms / Traceback
 During `test_strict_gradient_wall`, the test failed with:
