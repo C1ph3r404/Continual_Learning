@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-21
 - **Component:** Sensory Ingestion / Wernicke Engine / Parietal Hub Architecture
-- **Status:** NOT FIXED
+- **Status:** FIXED (e32ea82)
 
 ### Symptoms / Traceback
 In the initial architecture specification (`docs/Brain.md`), sensory pipelines were drawn as three isolated vertical streams:

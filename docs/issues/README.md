@@ -8,7 +8,7 @@ This directory serves as the persistent issue and bug database for the Continual
 
 | Issue ID | Date | Component / Module | Description | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| [ISSUE-001](ISSUE_001_dual_stream_linguistic_fork.md) | 2026-10-21 | Sensory / Wernicke / Parietal | Dual-stream sensory-linguistic split to prevent bypassing Wernicke or hallucinating language | NOT FIXED |
+| [ISSUE-001](ISSUE_001_dual_stream_linguistic_fork.md) | 2026-10-21 | Sensory / Wernicke / Parietal | Dual-stream sensory-linguistic split to prevent bypassing Wernicke or hallucinating language | FIXED (e32ea82) |
 
 ---
 
