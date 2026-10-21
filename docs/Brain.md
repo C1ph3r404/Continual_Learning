@@ -36,30 +36,32 @@ Lang Latents           Direct Visual                 Direct Audio             Re
      │   │      │   OCCIPITAL GATE   │              │   TEMPORAL GATE    │         │
      │   │      │ (Text vs Physical) │              │ (Speech vs Sound)  │         │
      │   │      └─────▲──────────────┘              └─────▲──────────────┘         │
-     │   │            │                                   │                        │
      │   │            │ Visual Patches                    │ Acoustic Latents       │
-     │   │            │                                   │                        │
-     │   │      ┌─────┴──────────────┐              ┌─────┴──────────────┐         │
-     │   │      │  OCCIPITAL ENGINE  │              │  TEMPORAL ENGINE   │         │
-     │   │      │  (Visual Processing│              │  (Audio Processing │         │
-     │   │      │     Network)       │              │     Network)       │         │
-     │   │      └─────▲──────────────┘              └─────▲──────────────┘         │
-     │   │            │                                   │                        │
-     │   │     [Images / Video]                    [Audio / Speech]                │
-     │   │                                                                         │
-     │ [Text / Code]                                                               │
-     │                                                                             │
-     │                               Associative Query (H_sensory)                 │
-     │               ┌─────────────────────────────────────────────────────────────┘
-     │               │ (Parietal Hub is the ONLY runtime associative querier)
-     ▼               ▼
+     │ [Text / Code]  │                                   │                        │
+     │       │  ┌─────┴──────────────┐              ┌─────┴──────────────┐         │
+     │       │  │  OCCIPITAL ENGINE  │              │  TEMPORAL ENGINE   │         │
+     │       │  │ (Visual Processing)│              │ (Audio Processing) │         │
+     │       │  └─────▲──────────┬───┘              └─────▲──────────┬───┘         │
+     │       │        │          │                        │          │             │
+     │       │ [Images / Video]  │                 [Audio / Speech]  │             │
+     │       │                   │                                   │             │
+     │       │                   │    Memory Learning Bus            │             │
+     │       │                   │    (Offline Training Only)        │             │
+     │       │                   └────────────────┬──────────────────┘             │
+     │       │                                    │                                │
+     │       └────────────────────────────────────┤ (Encoded Training Latents)     │
+     │                                            │                                │
+     │                                            │  Associative Query (H_sensory) │
+     │                            ┌───────────────┴────────────────────────────────┘
+     │                            │ (Parietal Hub is the ONLY runtime querier)
+     ▼                            ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                          NEOCORTICAL KNOWLEDGE SYSTEM                           │
 │                   (Decoupled Parametric Key-Value FFN Memory)                   │
 │                                                                                 │
 │  • Fast Forward Associative Lookup (Queried strictly by Parietal Hub at runtime)│
-│  • Offline Learning: Hooks processed latents from Wernicke, Occipital &         │
-│    Temporal during sleep to consolidate semantic fields & cross-modal memories  │
+│  • Memory Learning / Training: Ingests latents from frozen Wernicke, Occipital, │
+│    and Temporal encoders to form cross-modal associations & attractor basins    │
 └────────────────────────────────────────▲────────────────────────────────────────┘
                                          │ Offline Replay
                                          └─ (Episodic Traces)
@@ -348,11 +350,11 @@ To train each decoupled component without cross-subspace interference, dedicated
 | Stage & Component | Internet Dataset Source | Local Verified Sample | Target Supervision / Objective |
 | :--- | :--- | :--- | :--- |
 | **Stage 0: Wernicke Core (`theta_lang`)** | [Universal Dependencies English-EWT](https://github.com/UniversalDependencies/UD_English-EWT) | `data/sample/stage1_wernicke_syntax.jsonl` | POS tagging, dependency tree structure, masked syntax prediction. **Permanently frozen.** |
-| **Stage 0: Occipital Core (`theta_vis`)** | ImageNet / SA-1B / WebVid | Feature extractor backbone | Spatial invariant primitives, contours, depth (MAE / DINOv2). **Permanently frozen.** |
-| **Stage 0: Temporal Core (`theta_aud`)** | LibriSpeech / AudioSet | Feature extractor backbone | Acoustic invariant primitives, phonetics (wav2vec 2.0 / HuBERT). **Permanently frozen.** |
-| **Stage 1: Neocortical Memory (`theta_know`)** | Natural Prose & [MS-COCO Captions](http://cocodataset.org/) | `data/sample/stage2_neocortex_knowledge.jsonl` & `stage3_parietal_multimodal.jsonl` | Universal multimodal associative memory ($W_{\text{key}}, W_{\text{value}}$): binds words $\leftrightarrow$ visual patches $\leftrightarrow$ affordances self-supervised. **Locked during reasoning.** |
-| **Stage 2: Joint Executive-Perceptual Loop (`theta_parietal` + `theta_frontal`)** | [OpenAI GSM8K](https://github.com/openai/grade-school-math) & Causal Reasoning Corpora | `data/sample/stage4_frontal_reasoning.jsonl` | **Supervised Learning (SL) on Reasoning:** Frontal generates multi-step reasoning sequences (`prompt` $\to$ `target`) via re-entrant next-token prediction over Parietal canvas. Parietal queries Neocortex for context. **Gradients update only Frontal + Parietal; Sensory & Neocortex are frozen.** |
-| **Stage 3: Offline Sleep Consolidation** | Daytime Episodic Traces | Internal Replay Buffer | Asynchronous offline consolidation into Neocortical weights via Elastic Weight Consolidation (EWC). |
+| **Stage 0: Occipital Core & Gate (`theta_vis`)** | ImageNet / SA-1B / Scene-Text | Feature extractor + Text/Scene classifier | Spatial invariant primitives (MAE / DINOv2) + **Occipital Gate** calibration (glyph vs. physical scene routing). **Permanently frozen.** |
+| **Stage 0: Temporal Core & Gate (`theta_aud`)** | LibriSpeech / AudioSet / VAD | Feature extractor + Speech/Sound classifier | Acoustic invariant primitives (wav2vec 2.0 / HuBERT) + **Temporal Gate** calibration (speech phoneme vs. ambient sound routing). **Permanently frozen.** |
+| **Stage 1: Neocortical Memory (`theta_know`)** | Natural Prose & [MS-COCO Captions](http://cocodataset.org/) | `data/sample/stage2_neocortex_knowledge.jsonl` & `stage3_parietal_multimodal.jsonl` | **Memory Learning Bus Protocol:** Raw multimodal data streams through frozen Stage 0 encoders (Wernicke, Occipital, Temporal). The resulting latents train Neocortical associative memory ($W_{\text{key}}, W_{\text{value}}$) via self-supervised semantic field reconstruction and cross-modal attractor binding. Encoders remain 100% frozen. **Neocortex is locked during downstream reasoning.** |
+| **Stage 2: Joint Executive-Perceptual Loop (`theta_parietal` + `theta_frontal`)** | [OpenAI GSM8K](https://github.com/openai/grade-school-math) & Causal Reasoning Corpora | `data/sample/stage4_frontal_reasoning.jsonl` | **Supervised Learning (SL) on Reasoning:** Frontal generates multi-step reasoning sequences (`prompt` $\to$ `target`) via re-entrant next-token prediction over Parietal canvas. Parietal queries Neocortex for context. **Gradients update only Frontal + Parietal; Sensory encoders, Gates & Neocortex remain strictly frozen behind the Gradient Wall.** |
+| **Stage 3: Offline Sleep Consolidation** | Daytime Episodic Traces | Internal Replay Buffer | Asynchronous offline consolidation of working memory traces back into Neocortical weights via Elastic Weight Consolidation (EWC) to prevent parameter drift. |
 
 All sample datasets are verified via `scripts/verify_datasets.py` to ensure schema conformance and absence of discrete graph tables in the neural weights.
 
