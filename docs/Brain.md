@@ -19,28 +19,43 @@
                                 │  • Multimodal Sensory Bank (K_Parietal, V_Parietal)    │
                                 │  • Exogenous Saliency (Bottom-up alerts)               │
                                 └──▲──────────────▲──────────────▲──────────────▲───────┘
-                                   │               │              │              │
-                              Lang Latents    Visual Latents  Audio Latents  Neocortical Recall
-                                   │               │              │          (Forward Associative)
-                          ┌────────┴───────┐ ┌─────┴────────┐ ┌───┴──────────┐      │
-                          │    LANGUAGE    │ │    VISUAL    │ │     AUDIO    │      │
-                          │   PROCESSING  │ │  PROCESSING  │ │   PROCESSING │      │
-                          │    NETWORK    │ │   NETWORK    │ │    NETWORK   │      │
-                          │(Wernicke Eng.)│ │(Occipital E.)│ │ (Temporal E.)│      │
-                          └────────▲──────┘ └─────▲────────┘ └───▲──────────┘      │
-                                   │              │              │                  │
-                           [Text / Code]   [Images / Video] [Audio / Speech]       │
-                                   │              │              │                  │
-                                   ▼              ▼              ▼                  ▼
-                                ┌────────────────────────────────────────────────────────┐
-                                │              NEOCORTICAL KNOWLEDGE SYSTEM              │
-                                │        (Decoupled Parametric Key-Value FFN Memory)     │
-                                │                                                        │
-                                │  • Zero-Backprop Forward Associative Lookup (O(1))     │
-                                │  • Asynchronous Offline Consolidation (Sleep Phase)    │
-                                └────────────────────────────────────────▲───────────────┘
-                                                                         │ Offline Replay
-                                                                         └─ (Episodic Traces)
+                                   │              │              │              │
+                              Lang Latents   Direct Visual  Direct Audio   Neocortical Recall
+                                (H_lang)       (H_vis)        (H_aud)      (Forward Associative)
+                                   │              │              │              │
+                        ┌──────────┴──────────┐   │              │              │
+                        │ LANGUAGE PROCESSING │   │              │              │
+                        │       NETWORK       │   │              │              │
+                        │   (Wernicke Eng.)   │   │              │              │
+                        └──────▲───▲────▲─────┘   │              │              │
+                               │   │    │         │              │              │
+          ┌────────────────────┘   │    └────────────────────┐   │              │
+          │ Gated Speech           │ Direct Text             │ Gated Text       │
+          │ Phonemes               │ Stream                  │ Glyphs           │
+          │                        │                         │                  │
+    ┌─────┴──────────┐             │                   ┌─────┴──────────┐       │
+    │     AUDIO      │             │                   │     VISUAL     │       │
+    │   PROCESSING   │             │                   │   PROCESSING   │       │
+    │    NETWORK     │             │                   │    NETWORK     │       │
+    │ (Temporal E.)  │             │                   │ (Occipital E.) │       │
+    └─────▲───┬──────┘             │                   └─────▲───┬──────┘       │
+          │   │                    │                         │   │              │
+          │   └────────────────────┼─────────────────────────┘   │              │
+          │      Direct Audio      │        Direct Visual        │              │
+          │      (Non-speech)      │        (Spatial scene)      │              │
+          │                        │                             │              │
+   [Audio / Speech]          [Text / Code]                [Images / Video]      │
+          │                        │                             │              │
+          ▼                        ▼                             ▼              ▼
+       ┌────────────────────────────────────────────────────────────────────────┐
+       │                      NEOCORTICAL KNOWLEDGE SYSTEM                      │
+       │                (Decoupled Parametric Key-Value FFN Memory)             │
+       │                                                                        │
+       │          • Zero-Backprop Forward Associative Lookup (O(1))             │
+       │          • Asynchronous Offline Consolidation (Sleep Phase)            │
+       └───────────────────────────────────▲────────────────────────────────────┘
+                                           │ Offline Replay
+                                           └─ (Episodic Traces)
 ```
 
 ---
@@ -51,20 +66,30 @@
 * **Visual Processing Network (Occipital Engine):**
   * **Role:** Dedicated processor for raw visual frames, video sequences, and spatial geometry.
   * **Mechanism:** Extracts invariant visual tokens (edges, textures, spatial relations, optical flow) without attempting higher-level reasoning.
+  * **Dual-Stream Forking:**
+    * *Stream 1 (Direct Sensory Stream - Always Active):* Emits full visual latents ($H_{\text{vis}}$) containing scene geometry, object shapes, and spatial layout directly to the Parietal Hub.
+    * *Stream 2 (Visual Word Form Gateway - Conditionally Active):* Detects orthographic glyphs/printed text (OCR). If text glyphs are present, it forks them into the Wernicke Engine for linguistic parsing.
   * **Anti-Forgetting Strategy:** Frozen foundational feature extractors with modular residual adapters (LoRA pools) for novel sensor distributions.
 * **Audio Processing Network (Temporal Engine):**
   * **Role:** Dedicated processor for acoustic waveforms, phonetics, environmental sounds, and temporal rhythm.
   * **Mechanism:** Maps continuous acoustic frequencies into structured audio embeddings.
+  * **Dual-Stream Forking:**
+    * *Stream 1 (Direct Sensory Stream - Always Active):* Emits full acoustic latents ($H_{\text{aud}}$) containing environmental noise, pitch, timbre, and non-verbal alerts directly to the Parietal Hub.
+    * *Stream 2 (Acoustic Phoneme Gateway - Conditionally Active):* Detects vocal formants and speech phonemes. If speech is present, it forks the phonemic sequence into the Wernicke Engine for linguistic parsing.
   * **Anti-Forgetting Strategy:** Structural stability for acoustic primitives; high-level semantic binding is offloaded to the associative networks.
-* **Language Processing Network (Wernicke Engine):**
-  * **Role:** Dedicated processor for raw text, code, symbolic sequences, and natural language syntax.
-  * **Mechanism:** Encodes tokenized text streams into structured language embeddings ($H_{\text{lang}}$), capturing syntactic structure, semantic roles, and lexical relationships without attempting higher-level reasoning or cross-modal binding.
+* **Language Processing Network (Wernicke Engine - The Receptive Language Hub):**
+  * **Role:** Universal receptive language processor across all modalities (digital text, spoken phonemes, and visual text).
+  * **Mechanism:** Encodes symbolic token sequences—whether arriving from direct text/code streams, the Temporal acoustic phoneme gateway, or the Occipital visual word gateway—into structured language embeddings ($H_{\text{lang}}$), capturing syntactic structure, semantic roles, and lexical relationships without attempting cross-modal physical binding.
+  * **Zero-Hallucination Guarantee:** For non-linguistic scenes (e.g. mountain landscapes or wind noise), sensory gating scores drop to zero. Wernicke remains idle, completely eliminating text hallucination while preserving pure visual/acoustic spatial scenes in the Parietal Hub.
   * **Anti-Forgetting Strategy:** Frozen pretrained language backbone with orthogonal LoRA adapter pools for domain-specific vocabulary and linguistic patterns. Core linguistic primitives (grammar, syntax, morphology) are universal and do not need continual overwriting.
 
 ### 2. The Intelligence Gathering Network (Parietal Hub - The Active Sensory Canvas)
 * **Role:** The active perceptual blackboard and working sensory workspace for the current scene.
 * **Non-Memory Nature:** The Parietal Hub **does not store long-term factual associations or world knowledge**. Instead, it acts as the short-term sensory stage where incoming real-time perception is assembled alongside recalled facts from the Neocortex.
-* **Direct Inputs:** Ingests active sensory latents from the Wernicke Engine ($H_{\text{lang}}$), Occipital Engine ($H_{\text{vis}}$), and Temporal Engine ($H_{\text{aud}}$) for whichever modalities are currently active in the perceptual window.
+* **Direct Inputs:** Ingests active sensory latents simultaneously:
+  * $H_{\text{lang}}$ from Wernicke (syntactically parsed speech, text, or visual reading).
+  * $H_{\text{vis}}$ directly from Occipital (spatial geometry, scene layout, physical objects).
+  * $H_{\text{aud}}$ directly from Temporal (environmental sounds, tone, pitch, acoustic background).
 * **Automatic Neocortical Association Query:** Incoming sensory tokens immediately query the pre-trained Neocortical Knowledge System via fast forward-pass lookup:
   $$\text{Recall}_{\text{Neocortex}} = \text{Softmax}\left(\frac{H_{\text{sensory}} \cdot W_{\text{key}}}{\sqrt{d}}\right) W_{\text{value}}$$
 * **The Assembled Key-Value Bank ($K, V$):** Combines the active sensory tokens with their recalled multimodal affordances into a unified working representation:
