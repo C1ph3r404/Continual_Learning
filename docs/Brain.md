@@ -1,61 +1,68 @@
 # The Modular Brain-Inspired Architecture Breakdown
 
 ```text
-                                ┌────────────────────────────────────────────────────────┐
-                                │                 HIGHER FUNCTION NETWORK                │
-                                │         (Executive Control / Frontal Decision Core)    │
-                                │                                                        │
-                                │  • Working Memory Scratchpad (Rolling Active Buffer)   │
-                                │  • Executive Attention Engine (Endogenous Queries: Q)   │
-                                │  • Causal World Model & Variable-Binding Logic         │
-                                └───────┬────────────────────────────────▲───────────────┘
-                                        │ Executive Attention Spotlight  │ Resolved Concept Packets
-                                        │ (Top-Down Queries: Q_Frontal)  │ & Bound Representations
-                                        ▼                                │
-                                ┌────────────────────────────────────────┴───────────────┐
-                                │             INTELLIGENCE GATHERING NETWORK             │
-                                │         (Parietal Hub: Sensory Key-Value Substrate)    │
-                                │                                                        │
-                                │  • Multimodal Sensory Bank (K_Parietal, V_Parietal)    │
-                                │  • Exogenous Saliency (Bottom-up alerts)               │
-                                └──▲──────────────▲──────────────▲──────────────▲───────┘
-                                   │              │              │              │
-                              Lang Latents   Direct Visual  Direct Audio   Neocortical Recall
-                                (H_lang)       (H_vis)        (H_aud)      (Forward Associative)
-                                   │              │              │              │
-                        ┌──────────┴──────────┐   │              │              │
-                        │ LANGUAGE PROCESSING │   │              │              │
-                        │       NETWORK       │   │              │              │
-                        │   (Wernicke Eng.)   │   │              │              │
-                        └──────▲───▲────▲─────┘   │              │              │
-                               │   │    │         │              │              │
-          ┌────────────────────┘   │    └────────────────────┐   │              │
-          │ Gated Speech           │ Direct Text             │ Gated Text       │
-          │ Phonemes               │ Stream                  │ Glyphs           │
-          │                        │                         │                  │
-    ┌─────┴──────────┐             │                   ┌─────┴──────────┐       │
-    │     AUDIO      │             │                   │     VISUAL     │       │
-    │   PROCESSING   │             │                   │   PROCESSING   │       │
-    │    NETWORK     │             │                   │    NETWORK     │       │
-    │ (Temporal E.)  │             │                   │ (Occipital E.) │       │
-    └─────▲───┬──────┘             │                   └─────▲───┬──────┘       │
-          │   │                    │                         │   │              │
-          │   └────────────────────┼─────────────────────────┘   │              │
-          │      Direct Audio      │        Direct Visual        │              │
-          │      (Non-speech)      │        (Spatial scene)      │              │
-          │                        │                             │              │
-   [Audio / Speech]          [Text / Code]                [Images / Video]      │
-          │                        │                             │              │
-          ▼                        ▼                             ▼              ▼
-       ┌────────────────────────────────────────────────────────────────────────┐
-       │                      NEOCORTICAL KNOWLEDGE SYSTEM                      │
-       │                (Decoupled Parametric Key-Value FFN Memory)             │
-       │                                                                        │
-       │          • Zero-Backprop Forward Associative Lookup (O(1))             │
-       │          • Asynchronous Offline Consolidation (Sleep Phase)            │
-       └───────────────────────────────────▲────────────────────────────────────┘
-                                           │ Offline Replay
-                                           └─ (Episodic Traces)
+                                 ┌────────────────────────────────────────────────────────┐
+                                 │                 HIGHER FUNCTION NETWORK                │
+                                 │         (Executive Control / Frontal Decision Core)    │
+                                 │                                                        │
+                                 │  • Working Memory Scratchpad (Rolling Active Buffer)   │
+                                 │  • Executive Attention Engine (Endogenous Queries: Q)  │
+                                 │  • Causal World Model & Variable-Binding Logic         │
+                                 └───────┬────────────────────────────────▲───────────────┘
+                                         │ Executive Attention Spotlight  │ Resolved Concept Packets
+                                         │ (Top-Down Queries: Q_Frontal)  │ & Bound Representations
+                                         ▼                                │
+ ┌────────────────────────────────────────────────────────────────────────┴───────────────┐
+ │                            INTELLIGENCE GATHERING NETWORK                              │
+ │                      (Parietal Hub: Sensory Key-Value Substrate)                       │
+ │                                                                                        │
+ │  • Multimodal Sensory Bank (K_Parietal, V_Parietal)                                    │
+ │  • Real-Time Associative Neocortex Query: H_sensory ──► Recalled Context               │
+ │  • Exogenous Saliency (Bottom-up alerts)                                               │
+ └───▲──────────────────────▲─────────────────────────────▲────────────────────────▲──────┘
+     │                      │                             │                        │
+Lang Latents           Direct Visual                 Direct Audio             Recall Context
+  (H_lang)                (H_vis)                       (H_aud)                 (O(1) Lookup)
+     │                      │                             │                        │
+┌────┴────────────┐         │                             │                        │
+│    WERNICKE     │         │                             │                        │
+│     ENGINE      │         │                             │                        │
+│ (Language Core) │         │                             │                        │
+└────▲───▲────▲───┘         │                             │                        │
+     │   │    │             │                             │                        │
+     │   │    └───────┐     │                             │                        │
+     │   │            │     │                             │                        │
+     │   │      ┌─────┴─────┴────────┐              ┌─────┴─────┴────────┐         │
+     │   │      │   OCCIPITAL GATE   │              │   TEMPORAL GATE    │         │
+     │   │      │ (Text vs Physical) │              │ (Speech vs Sound)  │         │
+     │   │      └─────▲──────────────┘              └─────▲──────────────┘         │
+     │   │            │                                   │                        │
+     │   │            │ Visual Patches                    │ Acoustic Latents       │
+     │   │            │                                   │                        │
+     │   │      ┌─────┴──────────────┐              ┌─────┴──────────────┐         │
+     │   │      │  OCCIPITAL ENGINE  │              │  TEMPORAL ENGINE   │         │
+     │   │      │  (Visual Processing│              │  (Audio Processing │         │
+     │   │      │     Network)       │              │     Network)       │         │
+     │   │      └─────▲──────────────┘              └─────▲──────────────┘         │
+     │   │            │                                   │                        │
+     │   │     [Images / Video]                    [Audio / Speech]                │
+     │   │                                                                         │
+     │ [Text / Code]                                                               │
+     │                                                                             │
+     │                               Associative Query (H_sensory)                 │
+     │               ┌─────────────────────────────────────────────────────────────┘
+     │               │ (Parietal Hub is the ONLY runtime associative querier)
+     ▼               ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          NEOCORTICAL KNOWLEDGE SYSTEM                           │
+│                   (Decoupled Parametric Key-Value FFN Memory)                   │
+│                                                                                 │
+│  • Fast Forward Associative Lookup (Queried strictly by Parietal Hub at runtime)│
+│  • Offline Learning: Hooks processed latents from Wernicke, Occipital &         │
+│    Temporal during sleep to consolidate semantic fields & cross-modal memories  │
+└────────────────────────────────────────▲────────────────────────────────────────┘
+                                         │ Offline Replay
+                                         └─ (Episodic Traces)
 ```
 
 ---
@@ -90,8 +97,10 @@
   * $H_{\text{lang}}$ from Wernicke (syntactically parsed speech, text, or visual reading).
   * $H_{\text{vis}}$ directly from Occipital (spatial geometry, scene layout, physical objects).
   * $H_{\text{aud}}$ directly from Temporal (environmental sounds, tone, pitch, acoustic background).
-* **Automatic Neocortical Association Query:** Incoming sensory tokens immediately query the pre-trained Neocortical Knowledge System via fast forward-pass lookup:
-  $$\text{Recall}_{\text{Neocortex}} = \text{Softmax}\left(\frac{H_{\text{sensory}} \cdot W_{\text{key}}}{\sqrt{d}}\right) W_{\text{value}}$$
+* **Exclusive Runtime Neocortical Association Query:**
+  * **Sensory Decoupling:** Sensory encoders (Temporal, Occipital, Wernicke) **do NOT query the Neocortex during runtime**. Their job is strictly to extract clean latents without memory overhead.
+  * **Parietal Bridge:** The **Parietal Hub is the ONLY module that queries the Neocortex during real-time inference**. Incoming sensory tokens immediately query the pre-trained Neocortical Knowledge System via fast forward-pass lookup:
+    $$\text{Recall}_{\text{Neocortex}} = \text{Softmax}\left(\frac{H_{\text{sensory}} \cdot W_{\text{key}}}{\sqrt{d}}\right) W_{\text{value}}$$
 * **The Assembled Key-Value Bank ($K, V$):** Combines the active sensory tokens with their recalled multimodal affordances into a unified working representation:
   $$K_{\text{Parietal}} = [H_{\text{incoming}} W_{pk}^{(\text{sensory})} \;;\; \text{Recall}_{\text{Neocortex}} W_{pk}^{(\text{know})}]$$
   $$V_{\text{Parietal}} = [H_{\text{incoming}} W_{pv}^{(\text{sensory})} \;;\; \text{Recall}_{\text{Neocortex}} W_{pv}^{(\text{know})}]$$
