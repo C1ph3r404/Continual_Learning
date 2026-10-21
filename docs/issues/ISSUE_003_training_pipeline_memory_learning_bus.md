@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-21
 - **Component:** Training Pipeline / Sensory Gating / Neocortex Learning Architecture
-- **Status:** NOT FIXED
+- **Status:** FIXED (de7ff0c)
 
 ### Symptoms / Traceback
 The initial training pipeline specification did not formally account for:
