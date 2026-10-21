@@ -9,7 +9,7 @@ This directory serves as the persistent issue and bug database for the Continual
 | Issue ID | Date | Component / Module | Description | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | [ISSUE-001](ISSUE_001_dual_stream_linguistic_fork.md) | 2026-10-21 | Sensory / Wernicke / Parietal | Dual-stream sensory-linguistic split to prevent bypassing Wernicke or hallucinating language | FIXED (e32ea82) |
-| [ISSUE-002](ISSUE_002_flowchart_sensory_gating_and_neocortex_coupling.md) | 2026-10-21 | Architecture Flowchart / Parietal / Neocortex | Correct sensory post-encoder gating, eliminate false runtime Neocortex queries from sensory engines | NOT FIXED |
+| [ISSUE-002](ISSUE_002_flowchart_sensory_gating_and_neocortex_coupling.md) | 2026-10-21 | Architecture Flowchart / Parietal / Neocortex | Correct sensory post-encoder gating, eliminate false runtime Neocortex queries from sensory engines | FIXED (9d2c93d) |
 
 ---
 

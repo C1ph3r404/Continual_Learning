@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-21
 - **Component:** Documentation / Architecture Flowchart (`docs/Brain.md`)
-- **Status:** NOT FIXED
+- **Status:** FIXED (9d2c93d)
 
 ### Symptoms / Traceback
 The architecture flowchart in `docs/Brain.md` contained two misleading structural inaccuracies:
