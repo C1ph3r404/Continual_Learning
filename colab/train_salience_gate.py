@@ -53,10 +53,12 @@ class SalienceGate(nn.Module):
 
     def forward(self, h: torch.Tensor) -> torch.Tensor:
         """Returns probabilities in (0, 1) of shape (B, L)."""
+        h = h.to(dtype=self.net[0].weight.dtype)
         return torch.sigmoid(self.net(h).squeeze(-1))
 
     def get_logits(self, h: torch.Tensor) -> torch.Tensor:
         """Returns raw logits of shape (B, L)."""
+        h = h.to(dtype=self.net[0].weight.dtype)
         return self.net(h).squeeze(-1)
 
 

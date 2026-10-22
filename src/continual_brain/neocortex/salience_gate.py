@@ -38,9 +38,11 @@ class SalienceGate(nn.Module):
         Returns:
             salience_probs: Tensor of shape (B, L) with values in (0, 1)
         """
+        h_lang = h_lang.to(dtype=self.net[0].weight.dtype)
         logits = self.net(h_lang).squeeze(-1)  # (B, L)
         return torch.sigmoid(logits)
 
     def get_salience_logits(self, h_lang: torch.Tensor) -> torch.Tensor:
         """Raw logits for binary cross-entropy calibration loss."""
+        h_lang = h_lang.to(dtype=self.net[0].weight.dtype)
         return self.net(h_lang).squeeze(-1)
