@@ -13,7 +13,7 @@ This directory serves as the persistent issue and bug database for the Continual
 | [ISSUE-003](ISSUE_003_training_pipeline_memory_learning_bus.md) | 2026-10-21 | Training Pipeline / Sensory Gating / Neocortex | Update training curriculum for sensory gating calibration and offline memory learning bus | FIXED (de7ff0c) |
 | [ISSUE-004](ISSUE_004_gradient_wall_leak_submodule_traversal.md) | 2026-10-21 | Parietal Hub / Neocortex / Gradient Wall | Gradient wall leak caused by PyTorch recursive submodule traversal in Parietal Hub | FIXED (e860d21) |
 | [ISSUE-005](ISSUE_005_salience_gate_dtype_mismatch_fp16.md) | 2026-10-22 | Salience Gate / Training Pipeline | Dtype mismatch (Half vs Float) on GPU forward pass between DeBERTa and SalienceGate | FIXED (238006e) |
-| [ISSUE-006](ISSUE_006_github_push_protection_secret_exposure.md) | 2026-10-22 | Security / Remote Pipeline | GitHub push protection violation due to hardcoded Hugging Face secret | NOT FIXED |
+| [ISSUE-006](ISSUE_006_github_push_protection_secret_exposure.md) | 2026-10-22 | Security / Remote Pipeline | GitHub push protection violation due to hardcoded Hugging Face secret | FIXED (9a9c299) |
 
 ---
 
