@@ -29,6 +29,10 @@ class NeocortexMemory(nn.Module):
         # Semantic field projection head (used in Stage 1 self-supervised reading learning)
         self.semantic_field_head = nn.Linear(config.d_know, config.vocab_size, bias=False)
 
+        # Salience Gate on the Memory Learning Bus (Filters fillers from factual concepts)
+        from continual_brain.neocortex.salience_gate import SalienceGate
+        self.salience_gate = SalienceGate(config)
+
         self._reset_parameters()
 
     def _reset_parameters(self):
