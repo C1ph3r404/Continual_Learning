@@ -20,9 +20,10 @@ class SalienceGate(nn.Module):
         super().__init__()
         self.config = config
         d_in = config.d_lang
-        d_hidden = max(32, d_in // 2)
+        d_hidden = getattr(config, "d_gate_hidden", 128)
 
         self.net = nn.Sequential(
+
             nn.Linear(d_in, d_hidden),
             nn.GELU(),
             nn.LayerNorm(d_hidden),

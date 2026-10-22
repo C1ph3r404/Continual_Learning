@@ -24,6 +24,8 @@ class BrainConfig:
     d_know: int = 128           # Emitted factual attribute dimension
     n_memory_units: int = 512   # Continuous associative memory units (columns)
     memory_temperature: float = 1.0
+    d_gate_hidden: int = 128    # Hidden layer dimension for Salience Gate MLP
+
 
     # Frontal Core & dlPFC Working Memory (theta_frontal)
     d_frontal: int = 128        # Native dimension of Frontal slots
