@@ -7,6 +7,9 @@ __pycache__/
 *.pt
 *.pth
 *.bin
+*.safetensors
+*.onnx
+*.ckpt
 
 # Environment & IDE
 .venv/
@@ -15,6 +18,23 @@ venv/
 .idea/
 .vscode/
 
+# Secrets, Tokens, and Credentials
+.env
+.env.*
+*.env
+*.token
+*.key
+*.pem
+*.secret
+secrets/
+*secret*.json
+credentials.json
+tokens.json
+kaggle.json
+.huggingface/
+hf_token*
+
 # Scratch and OS
 .DS_Store
 *.tmp
+*.log
