@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-22
 - **Component:** Salience Gate / Training Pipeline (`colab/train_salience_gate.py`)
-- **Status:** NOT FIXED
+- **Status:** FIXED (238006e)
 
 ### Symptoms / Traceback
 When executing `colab/train_salience_gate.py` on remote Colab with a Tesla T4 GPU, the first training step fails during `gate.get_logits(h_lang)`:
@@ -28,4 +28,4 @@ The frozen Wernicke backbone (`microsoft/deberta-v3-small`) on CUDA produces act
 Execute training on remote Colab session with GPU T4 and verify all 8 epochs complete successfully without dtype errors.
 
 ### Commit Reference
-- Commit: TBD
+- Commit: `238006e`
