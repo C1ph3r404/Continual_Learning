@@ -122,3 +122,40 @@ def test_strict_gradient_wall(test_config):
     has_parietal_grad = any(p.grad is not None for p in brain.parietal.parameters())
     assert has_frontal_grad, "Frontal Core did not receive gradients!"
     assert has_parietal_grad, "Parietal Hub did not receive gradients!"
+
+
+def test_stage1_neocortex_memory_learning(test_config):
+    brain = ContinualBrain(test_config)
+    passage_ids = torch.randint(1, test_config.vocab_size, (2, 12))
+
+    optimizer = torch.optim.AdamW(
+        [p for p in brain.neocortex.parameters() if p.requires_grad],
+        lr=1e-3
+    )
+
+    # Perform multi-directional self-supervised memory step
+    metrics = train_neocortex_memory_step(
+        brain,
+        passage_ids,
+        optimizer,
+        special_token_ids=torch.tensor([0, 1]),
+        ortho_reg_weight=1e-3
+    )
+
+    assert "loss" in metrics
+    assert "loss_concept" in metrics
+    assert "loss_ortho" in metrics
+    assert metrics["loss"] > 0.0
+
+    # Gradient wall check during Stage 1
+    for name, p in brain.wernicke.named_parameters():
+        assert p.grad is None, f"Wernicke {name} leaked gradient during Stage 1!"
+    for name, p in brain.frontal.named_parameters():
+        assert p.grad is None, f"Frontal {name} leaked gradient during Stage 1!"
+    for name, p in brain.parietal.named_parameters():
+        assert p.grad is None, f"Parietal {name} leaked gradient during Stage 1!"
+
+    # Neocortex MUST have gradients
+    has_neocortex_grad = any(p.grad is not None for p in brain.neocortex.parameters())
+    assert has_neocortex_grad, "Neocortex did not receive gradients during Stage 1!"
+
